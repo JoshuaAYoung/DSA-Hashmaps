@@ -37,7 +37,7 @@ const WhatDoesThisDo = function () {
   console.log(map2.get(str3));
 }
 
-console.log(WhatDoesThisDo())
+WhatDoesThisDo()
 
 // 4 10 22 88 15 59 28 17 X  31 X
 // 0 1  2  3  4  5  6  7  8  9  10
@@ -53,17 +53,53 @@ function deleteDups(string) {
   dupHash._capacity = string.length;
   stringArray.reverse()
   let resultArray = []
-  console.log(stringArray)
+  //add elements to the hashing table so that it doesn't return an error when we do the .get in the next map
   stringArray.map(char =>
-    dupHash.set(char, string.indexOf(char))
+    dupHash.set(char, 0)
   )
-  stringArray.map(char => resultArray.splice(dupHash.get(char), 0, char))
-  console.log('test', resultArray)
-  console.log(dupHash)
-  console.log(dupHash._hashTable.length)
+  //loop through and count how many times each of the items is called, setting the characters "value" as that count
+  stringArray.map(char =>
+    dupHash.set(char, dupHash.get(char) + 1)
+  )
+
+  //loop through the stringArray and push the character to the resultArray only if the "count" is 1. If it isn't, then subtract from the count.
+  for (i = 0; i < stringArray.length; i++) {
+    let character = stringArray[i]
+    let count = dupHash.get(character)
+    if (count === 1) {
+      resultArray.push(character)
+    }
+    else {
+      dupHash.set(character, count - 1)
+    }
+  }
+  resultArray.reverse();
+  console.log(resultArray.join(""))
 }
 
-deleteDups("google all that you think can think of");
+deleteDups("google all that you think can think of")
+
+function deleteDupsTwo(string) {
+  stringArray = string.split('')
+  const dupHash = new HashMap;
+  dupHash._capacity = string.length;
+  resultArray = []
+  //adds all characters to the hash table so that our get in the loop doesn't throw an error
+  stringArray.map(char =>
+    dupHash.set(char, 'unseen')
+  )
+
+  for (let i = 0; i < stringArray.length; i++) {
+    let char = stringArray[i]
+    if (dupHash.get(char) === 'unseen') {
+      resultArray.push(char)
+      dupHash.set(char, 'seen')
+    }
+  }
+  console.log(resultArray.join(''))
+}
+
+deleteDupsTwo("google all that you think can think of");
 
 // function removeDuplicates() {
 //   const string = 'google all that you think can think of';
@@ -89,46 +125,46 @@ deleteDups("google all that you think can think of");
 //palindrome
 
 
-const palindrome = (string) => {
-  const palindromeMap = new Map()
-  let odd = 0
-  for (let i = 0; i < string.length; i++) {
-    if (palindromeMap.get(string[i]) === undefined) {
-      palindromeMap.set(string[i], 1)
-    }
-    else {
-      let char = palindromeMap.get(string[i])
-      palindromeMap.set(string[i], char += 1)
-    }
-  }
-  for (let i = 0; i < palindromeMap.size; i++) {
-    if (palindromeMap.get(string[i]) % 2 !== 0) {
-      odd++
-      console.log('odd', odd)
-    }
-    if (odd > 1) {
-      return false
-    }
-  }
-  return true
-}
+// const palindrome = (string) => {
+//   const palindromeMap = new Map()
+//   let odd = 0
+//   for (let i = 0; i < string.length; i++) {
+//     if (palindromeMap.get(string[i]) === undefined) {
+//       palindromeMap.set(string[i], 1)
+//     }
+//     else {
+//       let char = palindromeMap.get(string[i])
+//       palindromeMap.set(string[i], char += 1)
+//     }
+//   }
+//   for (let i = 0; i < palindromeMap.size; i++) {
+//     if (palindromeMap.get(string[i]) % 2 !== 0) {
+//       odd++
+//       console.log('odd', odd)
+//     }
+//     if (odd > 1) {
+//       return false
+//     }
+//   }
+//   return true
+// }
 
-console.log(palindrome('acecarrr'))
+// console.log(palindrome('acecarrr'))
 
 
-let input = ['east', 'cars', 'acre', 'arcs', 'teas', 'eats', 'race'];
+// let input = ['east', 'cars', 'acre', 'arcs', 'teas', 'eats', 'race'];
 
-function anagram(array) {
-  let newHash = new Map();
+// function anagram(array) {
+//   let newHash = new Map();
 
-  array.forEach((word) => {
-    const groupWords = sortWords(word);
-    const group = newHash.get(groupWords) || [];
-    newHash.set(groupWords, [...group, word]);
-  });
-  return Array.from(newHash.values());
-}
-const sortWords = (input) => input.split('').sort().join('');
-// if hash.length === 0 you have an anagram, push that to matching array
+//   array.forEach((word) => {
+//     const groupWords = sortWords(word);
+//     const group = newHash.get(groupWords) || [];
+//     newHash.set(groupWords, [...group, word]);
+//   });
+//   return Array.from(newHash.values());
+// }
+// const sortWords = (input) => input.split('').sort().join('');
+// // if hash.length === 0 you have an anagram, push that to matching array
 
-console.log(anagram(input));
+// console.log(anagram(input));
